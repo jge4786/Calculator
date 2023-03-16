@@ -15,6 +15,10 @@
  *   3-1-2. =로 인한 계산은 식을 비우고 결과값을 입력
  * 4. 초기화 추가
  * 5. 직전 연산을 기억하는 기능 추가
+ *
+ * 3/16 내용
+ * 1. NSExpression  사용하지 않는 방식으로 전환 시도
+ * 2. 값이 Int의 제한을 넘어갈 경우 inf. 출력하도록 수정
  */
 
 import Foundation
@@ -61,6 +65,7 @@ enum Operators: Equatable, Hashable {
     case div
     case bracket(_ state: Bool)
     case erase
+    case percentage
     
     /** 연산자의 문자열을 손쉽게 가져오기 위함 */
     static let opDict: [Operators: String] = [
@@ -70,6 +75,7 @@ enum Operators: Equatable, Hashable {
         .div: "/",
         .bracket(true): "(",
         .bracket(false): ")",
+        .percentage: ""
     ]
 }
 
@@ -82,14 +88,24 @@ extension Double: Addable, Subtractable { }     //익스텐션 테스트용
 //extension Float: Addable, Multiplicable {}
 
 func makeResultString(_ value: String) -> String {
-    makeResultString(Double(value) ?? 0)
+    
+    if value.hasPrefix("0.") {
+        
+        return value
+    }
+    
+    return makeResultString(Double(value) ?? 0)
 }
 func makeResultString(_ value: Double) -> String {
     var resultString = ""
     var decimalString = ""
     
+    if value >= Double(Int.max) {
+        return "inf."
+    }
+    
     //정수 부분과 소수 부분 분리
-    if value == Double(Int(value)) {
+    if value == Double(Int(value)) && value >= 1.0 {
         resultString = String(Int(value))
     }else {
         resultString = String(value)
@@ -101,6 +117,8 @@ func makeResultString(_ value: Double) -> String {
             resultString = String(resultString[..<idx])
         }
     }
+    
+    
         
     resultString = String(resultString.reversed())
     

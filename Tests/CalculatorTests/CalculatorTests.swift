@@ -4,23 +4,9 @@ import XCTest
 final class CalculatorTests: XCTestCase {
     func testExample() throws {
         var buffer: InputBuffer = InputBuffer()
-        
-//        let inputList: [Any] = ["9",Operators.multi, ".", "4", Operators.add, "1", "3", "a", Operators.sub, ".", "4", ".", ".", "3", Operators.erase, Operators.erase, ".", "6", Operators.erase, "5", Operators.add, Operators.div, "6"]
-//        let inputList: [Any] = ["5", Operators.add, "1", "0", Operators.add, "2"]
-//        let inputList: [Any] = ["5", "0", Operators.add]
-//        let inputList: [Any] = [Operators.add, "5", "0"]
-//        let inputList: [Any] = ["2", "0", Operators.multi, "6"]
-//        let inputList: [Any] = [Operators.add, "3"]
-//        let inputList: [Any] = ["1", Operators.add, "2", Operators.sub]
-        let inputList: [Any] = ["4", Operators.add, "5"]
-        let inputList2: [Any] = ["1", "0", "0", "0", "2", "3", ".", "4", Operators.add, "0"]
-        
         var formula: Formular = Formular()
-        let tmpList: [Any] = inputList
         
-        inin(tmpList)
-        
-        func inin(_ tmpList: [Any]) {
+        func makeFormular(_ tmpList: [Any]) {
             for data in tmpList {
                 do{
                     let tmpValue = try buffer.newInput(newValue: data)
@@ -37,31 +23,93 @@ final class CalculatorTests: XCTestCase {
             formula.append(buffer.done() ?? Operand(to: ""))
         }
         
+        func flush() {
+            buffer.flush()
+            formula.flush()
+        }
         
-        XCTAssertEqual(formula.formular, "4.0+5.0")
-        XCTAssertEqual(try formula.evaluate(), 9)
-        XCTAssertEqual(UILabel.text, "9")
-        XCTAssertEqual(try formula.evaluate(), 14)
-        XCTAssertEqual(try formula.evaluate(), 19)
-        XCTAssertEqual(try formula.evaluate(isDone: true), 24)
+        let inputList0: [Any] = ["9",Operators.multi, ".", "4", Operators.add, "1", "3", "a", Operators.sub, ".", "4", ".", ".", "3", Operators.erase, Operators.erase, ".", "6", Operators.erase, "5", Operators.add, Operators.div, "6"]
+        let inputList1: [Any] = ["5", Operators.add, "1", "0", Operators.add, "2"]
+        let inputList2: [Any] = ["5", "0", Operators.add]
+        let inputList3: [Any] = [Operators.add, "5", "0"]
+        let inputList4: [Any] = ["2", "0", Operators.multi, "6"]
+        let inputList5: [Any] = [Operators.add, "3"]
+        let inputList6: [Any] = ["1", Operators.add, "2", Operators.sub]
+        let inputList7: [Any] = ["4", Operators.add, "5"]
+        let inputList8: [Any] = ["0"]
+        let inputList9: [Any] = ["1", "0", "0", "0", "2", "3", ".", "4", Operators.add, "0"]
         
-        buffer.flush()
-        formula.flush()
+        let inputList: [[Any]] = [
+            inputList0,
+            inputList1,
+            inputList2,
+            inputList3,
+            inputList4,
+            inputList5,
+            inputList6,
+            inputList7,
+            inputList8,
+            inputList9,
+            [".", "0", "0", "0", "0", "5", Operators.add]
+        ]
+        
+        let tmpList: [Any] = inputList[8]
+        
+        makeFormular(tmpList)
+
+        
+        XCTAssertEqual(formula.formular, "0.0")
+        XCTAssertEqual(try formula.evaluate(), 0)
+        XCTAssertEqual(UILabel.text, "0")
+        XCTAssertEqual(try formula.evaluate(), 0)
+        XCTAssertEqual(try formula.evaluate(), 0)
+        XCTAssertEqual(try formula.evaluate(isDone: true), 0)
+        
+        flush()
         
         XCTAssertEqual(UILabel.text, "0")
         
-        inin(inputList2)
+        makeFormular(inputList[9])
         try formula.evaluate(isDone: true)
         
         XCTAssertEqual(UILabel.text, "100,023.4")
         
-        inin([Operators.multi, "1", "0"])
+        makeFormular([Operators.multi, "1", "0"])
         
         XCTAssertEqual(formula.formular, "100023.4*10.0")
         
         try formula.evaluate()
         
         XCTAssertEqual(UILabel.text, "1,000,234")
+        
+        
+        flush()
+        
+        makeFormular(inputList[1])
+        
+        XCTAssertEqual(formula.formular, "5.0+10.0+2.0")
+        XCTAssertEqual(try formula.evaluate(), 17)
+        
+        makeFormular(inputList[3])
+        
+        XCTAssertEqual(formula.formular, "5.0+10.0+2.0+50.0")
+        XCTAssertEqual(try formula.evaluate(isDone: true), 67)
+        
+        makeFormular(inputList[4])
+        
+        XCTAssertEqual(formula.formular, "67.0+20.0*6.0")
+        XCTAssertEqual(try formula.evaluate(isDone: true), 187)
+        
+        
+        XCTAssertEqual(try formula.evaluate(), 1122)
+        XCTAssertEqual(formula.formular, "187.0*6.0")
+        XCTAssertEqual(UILabel.text, "1,122")
+        
+        flush()
+        
+        makeFormular(inputList[10])
+        
+        XCTAssertEqual(try formula.evaluate(), 0.00005)
     }
 }
 

@@ -98,6 +98,7 @@ import Foundation
 //        return nil
 //    }
 //}
+
 class InputBuffer {
     private var operand: String? {
         didSet {
