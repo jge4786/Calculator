@@ -7,7 +7,7 @@
 
 import Foundation
 
-class OperandBase {
+class OperandBase: FormularMember {
     let value: Double;
 
     var stringValue: String {

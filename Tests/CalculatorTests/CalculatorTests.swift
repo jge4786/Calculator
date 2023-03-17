@@ -60,7 +60,6 @@ final class CalculatorTests: XCTestCase {
         
         XCTAssertEqual(formula.formular, "0.0")
         XCTAssertEqual(try formula.evaluate(), 0)
-        XCTAssertEqual(UILabel.text, "0")
         XCTAssertEqual(try formula.evaluate(), 0)
         XCTAssertEqual(try formula.evaluate(), 0)
         XCTAssertEqual(try formula.evaluate(isDone: true), 0)
@@ -110,6 +109,18 @@ final class CalculatorTests: XCTestCase {
         makeFormular(inputList[10])
         
         XCTAssertEqual(try formula.evaluate(), 0.00005)
+        
+        flush()
+        
+        makeFormular(inputList[3])
+        XCTAssertEqual(try formula.evaluate(), 50)
+        XCTAssertEqual(try formula.evaluate(), 100)
+        XCTAssertEqual(try formula.evaluate(), 150)
+        XCTAssertEqual(try formula.evaluate(), 200)
+        
+        flush()
+        
+        XCTAssertEqual(try formula.evaluate(), 0)
     }
 }
 

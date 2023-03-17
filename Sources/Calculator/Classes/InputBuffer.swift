@@ -1,4 +1,5 @@
 //  입력 버퍼
+//
 //  InputBuffer.swift
 //  
 //
@@ -99,6 +100,7 @@ import Foundation
 //    }
 //}
 
+/// 사용자로부터 하나씩 입력받아 계산식에 필요한 연산자와 피연산자를 만드는 클래스
 class InputBuffer {
     private var operand: String? {
         didSet {
@@ -108,6 +110,7 @@ class InputBuffer {
     }
     private var opr: Operators?
     
+    //계산기 화면에 보이는 결과
     weak var resultLabel: UILabel!
         
     init() {
@@ -197,6 +200,7 @@ class InputBuffer {
        return nil
     }
     
+    // 모든 입력이 완료됐을 때 버퍼를 비우는 메소드
     func done() -> FormularMember? {
        defer {
            flush()

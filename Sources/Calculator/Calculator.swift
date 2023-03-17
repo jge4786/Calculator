@@ -24,24 +24,26 @@
 import Foundation
 
 //MARK: - 프로토콜
-protocol Addable {
+protocol Calculatable { }
+
+protocol Addable: Calculatable {
     static func + (lhs: Self, rhs: Self) -> Self
 }
 
-protocol Subtractable {
+protocol Subtractable:Calculatable {
     static func - (lhs: Self, rhs: Self) -> Self
 }
 
-protocol Divisible {
+protocol Divisible: Calculatable {
     static func / (lhs: Self, rhs: Self) -> Self
 }
 
-protocol Multiplicable {
+protocol Multiplicable: Calculatable {
     static func * (lhs: Self, rhs: Self) -> Self
 }
 
-protocol Calculatable: FormularMember, Addable, Subtractable, Divisible, Multiplicable {
-}
+//protocol Calculatable: Addable, Subtractable, Divisible, Multiplicable {
+//}
 
 /**
  연산자(Operator)와 피연산자(Calculatable)을 한 배열에 담기 위한 프로토콜
@@ -87,6 +89,11 @@ enum Operators: Equatable, Hashable {
 extension Double: Addable, Subtractable { }     //익스텐션 테스트용
 //extension Float: Addable, Multiplicable {}
 
+
+
+
+
+/// 결과창에 보일 문자열 만드는 함수
 func makeResultString(_ value: String) -> String {
     
     if value.hasPrefix("0.") {
