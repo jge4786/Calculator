@@ -67,7 +67,6 @@ enum Operators: Equatable, Hashable {
     case div
     case bracket(_ state: Bool)
     case erase
-    case percentage
     
     /** 연산자의 문자열을 손쉽게 가져오기 위함 */
     static let opDict: [Operators: String] = [
@@ -77,7 +76,6 @@ enum Operators: Equatable, Hashable {
         .div: "/",
         .bracket(true): "(",
         .bracket(false): ")",
-        .percentage: ""
     ]
 }
 

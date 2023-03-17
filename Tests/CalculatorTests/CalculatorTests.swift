@@ -28,7 +28,7 @@ final class CalculatorTests: XCTestCase {
             formula.flush()
         }
         
-        let inputList0: [Any] = ["9",Operators.multi, ".", "4", Operators.add, "1", "3", "a", Operators.sub, ".", "4", ".", ".", "3", Operators.erase, Operators.erase, ".", "6", Operators.erase, "5", Operators.add, Operators.div, "6"]
+        let inputList0: [Any] = ["9",Operators.multi, ".", "4", Operators.add, "1", "3", Operators.sub, ".", "4", ".", ".", "3", Operators.erase, Operators.erase, ".", "6", Operators.erase, "5", Operators.add, Operators.div, "6"]
         let inputList1: [Any] = ["5", Operators.add, "1", "0", Operators.add, "2"]
         let inputList2: [Any] = ["5", "0", Operators.add]
         let inputList3: [Any] = [Operators.add, "5", "0"]
@@ -112,7 +112,7 @@ final class CalculatorTests: XCTestCase {
         
         flush()
         
-        makeFormular(inputList[3])
+        makeFormular(inputList[2])
         XCTAssertEqual(try formula.evaluate(), 50)
         XCTAssertEqual(try formula.evaluate(), 100)
         XCTAssertEqual(try formula.evaluate(), 150)
@@ -120,7 +120,10 @@ final class CalculatorTests: XCTestCase {
         
         flush()
         
-        XCTAssertEqual(try formula.evaluate(), 0)
+        makeFormular(inputList[0])
+        
+        XCTAssertEqual(formula.formular, "9.0*0.4+13.0-0.5/6.0")
+        XCTAssertEqual(try formula.evaluate(), 16.516666666666667)
     }
 }
 

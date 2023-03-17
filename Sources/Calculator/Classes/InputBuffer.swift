@@ -8,98 +8,6 @@
 
 import Foundation
 
-//struct InputBuffer {
-//    private var operand: String?
-//    private var opr: Operators?
-//
-//    private mutating func flush() {
-//        self.operand = nil
-//        self.opr = nil
-//    }
-//
-//    private mutating func changeOperator(newValue: Operators) -> String? {
-//
-//        //입력 중인 피연산자가 있을 경우 맨 뒤의 값 하나 제거하고, 없을 경우 아무 일도 하지 않고 리턴
-//        if newValue == .erase {
-//            operand?.popLast()
-//
-//            return nil
-//        }
-//
-//        //입력 중인 피연산자가 있을 때, 연산자가 입력되는 상황
-//        if operand != nil && operand != "-" {
-//            let tmp: String = operand ?? ""
-//            operand = nil
-//
-//            self.opr = newValue
-//
-//            return tmp
-//        }
-//
-//        self.opr = newValue
-//
-//        return nil
-//    }
-//
-//    private mutating func appendOperand(newValue: String) -> Operators? {
-//         if operand == nil {
-//            operand = ""
-//        }
-//
-//        if newValue == "." && operand?.firstIndex(of: ".") != nil {
-//            return nil
-//        }
-//
-//        operand = (operand ?? "") + newValue
-//
-//        if opr != nil {
-//            let tmp = opr
-//            opr = nil
-//            return tmp
-//        }
-//
-//        return nil
-//    }
-//
-//    @discardableResult
-//    mutating func newInput(newValue: Any) throws -> FormularMember? {
-//        if let opr: Operators = newValue as? Operators {
-//            let result = changeOperator(newValue: opr)
-//
-//            if result != nil {
-//                return Operand(to: result ?? "")
-//            }
-//        }
-//        else if let oprd: String = newValue as? String {
-//            guard oprd == "." || Double(oprd) != nil  else{
-//                throw CalculationError.InputError
-//            }
-//
-//            let result = appendOperand(newValue: oprd)
-//            if result != nil {
-//                return Operator(result ?? .add)
-//            }
-//        }
-//
-//        return nil
-//    }
-//
-//    init(){
-//        operand = nil
-//        opr = nil
-//    }
-//
-//    mutating func done() -> FormularMember? {
-//        if opr != nil {
-//            return Operator(opr ?? .add)
-//        }else if operand != nil {
-//            return Operand(to: operand ?? "")
-//        }
-//        flush()
-//        return nil
-//    }
-//}
-
 /// 사용자로부터 하나씩 입력받아 계산식에 필요한 연산자와 피연산자를 만드는 클래스
 class InputBuffer {
     private var operand: String? {
@@ -130,6 +38,7 @@ class InputBuffer {
         UILabel.text = "0"
     }
 
+    //연산자 입력
     private func changeOperator(newValue: Operators) -> String? {
        
        //입력 중인 피연산자가 있을 경우 맨 뒤의 값 하나 제거하고, 없을 경우 아무 일도 하지 않고 리턴
@@ -154,6 +63,7 @@ class InputBuffer {
        return nil
     }
 
+    // 피연산자 입력
     private func appendOperand(newValue: String) -> Operators? {
         if operand == nil {
            operand = ""
@@ -179,14 +89,14 @@ class InputBuffer {
 
     @discardableResult
     func newInput(newValue: Any) throws -> FormularMember? {
-       if let opr: Operators = newValue as? Operators {
+       if let opr: Operators = newValue as? Operators {     // 피연산자가 입력되다가 연산자가 입력되는 경우
            let result = changeOperator(newValue: opr)
            
            if result != nil {
                return Operand(to: result ?? "")
            }
        }
-       else if let oprd: String = newValue as? String {
+       else if let oprd: String = newValue as? String {     //연산자가 입력되다가 피연산자가 입력되는 경우
            guard oprd == "." || Double(oprd) != nil  else{
                throw CalculationError.InputError
            }

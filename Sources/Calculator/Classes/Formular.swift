@@ -88,8 +88,6 @@ class Formular {
     /// - Parameter isDone: 저장된 식을 초기화하고 결과값으로 대체할지. 기본값: false ( false: 연산자 입력으로 인한 계산, true: = 입력으로 인한 계산)
     /// - Returns: 계산 결과
     func evaluate(isDone: Bool = false) throws -> NSNumber {
-        // 마지막으로 사용한 피연산자에(lastOperand) 현재 계산값을 저장할지.
-        var needSaveResult: Bool = false
         
         defer {
             hasNewValue = false
@@ -102,7 +100,6 @@ class Formular {
         
         // 식의 마지막 값이 연산자일 경우 더미 값 추가
         if let tmpOpr: Operator = list.last as? Operator {
-            needSaveResult = true
             switch tmpOpr.value {
             case "+", "-":
                 list.append(Operand(0))
@@ -117,7 +114,6 @@ class Formular {
         
         do {
             let result = try NSExpression(format: self.formular).expressionValue(with: nil, context: nil) as? NSNumber ?? 0
-            if hasNewValue && needSaveResult { lastOperand = Operand(number: result) }
             
             UILabel.text = makeResultString(Double(truncating: result))
             
